@@ -2,7 +2,7 @@
   "name": "satellites-tracker",
   "private": false,
   "description": "Nice Satellites Tracker project",
-  "license": "ISC",
+  "license": "MIT",
   "author": "Gary Sauvage (garywilddev@gmail.com)",
   "engines": {
     "node": "^12.14.0",
@@ -16,7 +16,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "lerna": "^3.22.1",
     "pm2": "^4.5.0",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "yarn": "^1.22.10"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
@@ -24,11 +25,10 @@
     "clean": "lerna clean",
     "release": "lerna version",
     "verify": "lerna run lint",
-    "dev:start": "pm2 start pm2-watch.json",
+    "prebuild": "yarn clean -y && yarn bootstrap",
+    "build": "lerna run build",
+    "dev:start": "pm2 start pm2.json",
     "dev:status": "pm2 status",
     "dev:stop": "pm2 stop all && pm2 delete all"
-  },
-  "dependencies": {
-    "next": "^10.0.1"
   }
 }

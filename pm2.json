@@ -8,7 +8,11 @@
       "error_file": "../../logs/backend/error.log",
       "out_file": "../../logs/backend/out.log",
       "merge_logs": true,
-      "env": {}
+      "env": {
+        "PORT": 49000,
+        "API_ENDPOINT": "https://api.n2yo.com/rest/v1/satellite",
+        "API_KEY": "<N2YO_API_KEY>"
+      }
     },
     {
       "name": "frontend",
@@ -18,7 +22,10 @@
       "error_file": "../../logs/frontend/error.log",
       "out_file": "../../logs/frontend/out.log",
       "merge_logs": true,
-      "env": {}
+      "env": {
+        "NEXT_PUBLIC_API_ENDPOINT": "http://localhost:49000",
+        "NEXT_PUBLIC_GOOGLE_API_KEY": "<GOOGLE_MAP_API_KEY>"
+      }
     }
   ]
 }

@@ -7,13 +7,11 @@
   "private": false,
   "scripts": {
     "lint": "eslint . --ignore-path ../../.gitignore",
-    "check": "npm run lint",
     "start": "node -r esm index.js",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "dependencies": {
     "apollo-server": "^2.19.0",
-    "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "graphql": "^15.4.0",
     "node-fetch": "^2.6.1"
