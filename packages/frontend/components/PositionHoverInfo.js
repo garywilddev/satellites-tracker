@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function MouseOverPopover({
   children,
-  index,
+  rank,
   id,
   name,
   lat,
@@ -58,7 +58,7 @@ export default function MouseOverPopover({
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography>{`${index ? `${index}. ` : ''}${name}${
+        <Typography>{`${rank ? `${rank}. ` : ''}${name}${
           id ? ` (${id})` : ''
         }: lat ${lat} / lng ${lng} / alt ${alt}`}</Typography>
       </Popover>

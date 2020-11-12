@@ -31,18 +31,21 @@ export default function SatellitePositionMap({ positions }) {
           <HomeMarker />
         </PositionHoverInfo>
         {positions &&
-          positions.map((position, index) => (
+            positions.map((position, index) => {
+              const rank = index + 1 
+              return (
             <PositionHoverInfo
-              index={index}
+              rank={rank}
               lat={position.lat}
               lng={position.lng}
               alt={position.alt}
               id={position.id}
               name={position.name}
             >
-              <PositionMarker text={index + 1} />
+              <PositionMarker text={rank} />
             </PositionHoverInfo>
-          ))}
+            
+          )})}
       </GoogleMapReact>
     </div>
   )
