@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { gql, useLazyQuery } from '@apollo/client'
 import Head from 'next/head'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import styles from '../styles/Home.module.css'
 import SatellitePositionList from '../components/SatellitePositionList'
 import SatellitePositionMap from '../components/SatellitePositionMap'
@@ -65,6 +66,8 @@ export default function Home() {
             Get Satellites Positions
           </button>
         </div>
+        {error && <div>`failed to load: {error}`</div>}
+        {loading && <CircularProgress />}
         {data && data.positions && (
           <>
             <SatellitePositionList
