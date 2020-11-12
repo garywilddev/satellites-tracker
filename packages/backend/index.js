@@ -16,7 +16,6 @@ const apiGraphQL = new ApolloServer({
   resolvers,
   playground: process.env.NODE_ENV !== 'production',
   introspection: process.env.NODE_ENV !== 'production',
-  async context({ req }) {},
 })
 
 apiGraphQL

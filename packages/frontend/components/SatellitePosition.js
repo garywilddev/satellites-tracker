@@ -1,11 +1,8 @@
 import { useEffect } from 'react'
 import { gql, useQuery, NetworkStatus } from '@apollo/client'
+import { OBSERVER_LAT, OBSERVER_LNG, OBSERVER_ALT } from '../constants'
 
-const OBSERVER_LAT = 48.8731039
-const OBSERVER_LNG = 2.3128007
-const OBSERVER_ALT = 87
-
-export const POSITION = gql`
+const POSITION = gql`
   query position(
     $id: ID!
     $observerLat: Float!

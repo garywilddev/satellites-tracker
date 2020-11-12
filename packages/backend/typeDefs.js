@@ -10,6 +10,7 @@ const typeDefs = gql`
 
   type SatellitePosition {
     id: ID!
+    name: String!
     time: DateTime!
     lat: Float
     lng: Float
@@ -17,6 +18,11 @@ const typeDefs = gql`
   }
 
   type Query {
+    allPositions(
+      observerLat: Float!
+      observerLng: Float!
+      observerAlt: Float!
+    ): [SatellitePosition!]
     position(
       id: ID!
       observerLat: Float!
