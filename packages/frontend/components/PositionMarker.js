@@ -11,7 +11,6 @@ const style = {
   top: -K_SIZE / 2,
   display: 'table',
 
-  border: '5px solid #f44336',
   borderRadius: 3 * K_SIZE,
   backgroundColor: 'white',
   textAlign: 'center',
@@ -22,6 +21,11 @@ const style = {
   cursor: 'pointer',
 }
 
-export default function PositionMarker({ text }) {
-  return <div style={style}>{text}</div>
+const selectedStyle = {
+  ...style,
+  border: '5px solid #f44336',
+}
+
+export default function PositionMarker({ selected, text }) {
+  return <div style={selected ? selectedStyle : style}>{text}</div>
 }

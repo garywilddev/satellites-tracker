@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { gql, useQuery, useLazyQuery } from '@apollo/client'
 import Head from 'next/head'
+import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import styles from '../styles/Home.module.css'
 import SatelliteInfoList from '../components/SatelliteInfoList'
@@ -43,6 +44,7 @@ const ALL_POSITIONS = gql`
 
 export default function Home() {
   const [count, setCount] = useState(0)
+  const [selectedId, setSelectedId] = useState(null)
 
   const {
     loading: satellitesLoading,
@@ -73,6 +75,10 @@ export default function Home() {
     setCount(count + 1)
   }
 
+  function handleSelectSatellite({ id }) {
+    setSelectedId(id)
+  }
+
   // Sort satellites info by mean motion
   let infos = [...satellitesData.satellites].sort(
     (a, b) => a.meanMotion - b.meanMotion,
@@ -98,28 +104,33 @@ export default function Home() {
           container
           direction="row"
           justify="center"
-          alignItems="center"
-          spacing={3}
+          alignItems="start"
+          spacing={6}
         >
-          <h1 className={styles.title}>🚀 Welcome to Satellites Tracker 🚀</h1>
           <Grid item xs={12} container justify="center" alignItems="center">
-            <button
-              type="submit"
+            <h1 className={styles.title}>
+              🚀 Welcome to Satellites Tracker 🚀
+            </h1>
+          </Grid>
+          <Grid item xs={12} container justify="center" alignItems="center">
+            <Button
+              variant="contained"
+              color="secondary"
               onClick={() => {
                 handleOnClick()
               }}
             >
               Get Satellites Positions
-            </button>
+            </Button>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={7}>
             {infos && (
               <SatelliteInfoList
                 satellitesLoading={satellitesLoading}
                 satellitesError={satellitesError}
                 satellitesInfos={infos}
-                arePositionsAvailable={!!positionsData}
                 positionsLoading={positionsLoading}
+                handleSelectSatellite={handleSelectSatellite}
               />
             )}
             {positionsError && <div>`failed to load: {positionsError}`</div>}
@@ -127,7 +138,7 @@ export default function Home() {
 
           {positionsData && (
             <Grid item xs={12} container justify="center" alignItems="center">
-              <SatellitePositionMap positions={infos} />
+              <SatellitePositionMap positions={infos} selectedId={selectedId} />
             </Grid>
           )}
         </Grid>

@@ -13,7 +13,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: top;
   align-items: center;
 }
 
@@ -24,6 +24,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: Galano Grotesque Alt, Oswald, Arial, Helvetica, sans-serif;
 }
 
 .footer img {
@@ -31,7 +32,8 @@
 }
 
 .footer a {
-  display: flex;
+  text-decoration: none;
+  display: inline;
   justify-content: center;
   align-items: center;
 }
@@ -48,6 +50,7 @@
 }
 
 .title {
+  font-family: Galano Grotesque Alt, Oswald, Arial, Helvetica, sans-serif;
   margin: 0;
   line-height: 1.15;
   font-size: 4rem;

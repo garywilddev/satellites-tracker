@@ -5,31 +5,31 @@ export default function SatelliteInfoList({
   satellitesError,
   satellitesLoading,
   satellitesInfos,
-  arePositionsAvailable,
   positionsLoading,
+  handleSelectSatellite,
 }) {
   const columns = [
     { field: 'rank', headerName: '#', width: 50 },
     { field: 'name', headerName: 'Name', width: 200 },
     { field: 'id', headerName: 'NORAD ID', width: 130 },
-    { field: 'meanMotion', headerName: 'Mean motion', width: 130 },
+    { field: 'meanMotion', headerName: 'Mean motion (rev/day)', width: 200 },
     {
       field: 'lat',
-      headerName: 'Latitude',
+      headerName: 'Latitude (°)',
       width: 130,
       renderCell: params =>
         positionsLoading ? <CircularProgress /> : params.value,
     },
     {
       field: 'lng',
-      headerName: 'Longitude',
+      headerName: 'Longitude (°)',
       width: 130,
       renderCell: params =>
         positionsLoading ? <CircularProgress /> : params.value,
     },
     {
       field: 'alt',
-      headerName: 'Altitude',
+      headerName: 'Altitude (m)',
       width: 130,
       renderCell: params =>
         positionsLoading ? <CircularProgress /> : params.value,
@@ -50,6 +50,10 @@ export default function SatelliteInfoList({
             }))}
             columns={columns}
             hideFooterPagination
+            onRowSelected={param => {
+              console.log({ param })
+              return handleSelectSatellite({ id: param.data.id })
+            }}
           />
         </div>
       )}

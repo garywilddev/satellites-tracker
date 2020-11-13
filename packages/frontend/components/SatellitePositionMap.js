@@ -5,7 +5,7 @@ import PositionMarker from './PositionMarker'
 import PositionHoverInfo from './PositionHoverInfo'
 import { OBSERVER_LAT, OBSERVER_LNG, OBSERVER_ALT } from '../constants'
 
-export default function SatellitePositionMap({ positions }) {
+export default function SatellitePositionMap({ positions, selectedId }) {
   const defaultProps = {
     center: {
       lat: OBSERVER_LAT,
@@ -42,7 +42,10 @@ export default function SatellitePositionMap({ positions }) {
                 id={position.id}
                 name={position.name}
               >
-                <PositionMarker text={rank} />
+                <PositionMarker
+                  selected={position.id === selectedId}
+                  text={rank}
+                />
               </PositionHoverInfo>
             )
           })}
