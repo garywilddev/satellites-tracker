@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { gql, useQuery, useLazyQuery } from '@apollo/client'
 import Head from 'next/head'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import Grid from '@material-ui/core/Grid'
 import styles from '../styles/Home.module.css'
 import SatelliteInfoList from '../components/SatelliteInfoList'
 import SatellitePositionMap from '../components/SatellitePositionMap'
@@ -94,39 +94,50 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Satellites Tracker</h1>
-        <div className={styles.grid}>
-          <button
-            type="submit"
-            onClick={() => {
-              handleOnClick()
-            }}
-          >
-            Get Satellites Positions
-          </button>
-        </div>
-        {infos && (
-          <div className={styles.grid}>
-            <SatelliteInfoList
-              satellitesLoading={satellitesLoading}
-              satellitesError={satellitesError}
-              satellitesInfos={infos}
-            />
-          </div>
-        )}
-        {positionsError && <div>`failed to load: {positionsError}`</div>}
-        {positionsLoading && <CircularProgress />}
-        {positionsData && (
-          <>
-            <SatellitePositionMap positions={infos} />
-          </>
-        )}
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={3}
+        >
+          <h1 className={styles.title}>🚀 Welcome to Satellites Tracker 🚀</h1>
+          <Grid item xs={12} container justify="center" alignItems="center">
+            <button
+              type="submit"
+              onClick={() => {
+                handleOnClick()
+              }}
+            >
+              Get Satellites Positions
+            </button>
+          </Grid>
+          <Grid item xs={6}>
+            {infos && (
+              <SatelliteInfoList
+                satellitesLoading={satellitesLoading}
+                satellitesError={satellitesError}
+                satellitesInfos={infos}
+                arePositionsAvailable={!!positionsData}
+                positionsLoading={positionsLoading}
+              />
+            )}
+            {positionsError && <div>`failed to load: {positionsError}`</div>}
+          </Grid>
+
+          {positionsData && (
+            <Grid item xs={12} container justify="center" alignItems="center">
+              <SatellitePositionMap positions={infos} />
+            </Grid>
+          )}
+        </Grid>
       </main>
       <footer className={styles.footer}>
         <p>
           {'Made with '}
           <span className={styles.love} />
-          {' by Gary'}
+          {' by '}
+          <a href="https://github.com/garywilddev">Gary</a>
         </p>
       </footer>
     </div>
