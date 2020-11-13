@@ -25,10 +25,13 @@
     "clean": "lerna clean",
     "release": "lerna version",
     "verify": "lerna run lint",
-    "prebuild": "yarn clean -y && yarn bootstrap",
+    "prebuild": "yarn clean -y && yarn bootstrap && yarn dev:start --only backend",
     "build": "lerna run build",
+    "postbuild": "yarn dev:stop",
     "dev:start": "pm2 start pm2.json",
     "dev:status": "pm2 status",
-    "dev:stop": "pm2 stop all && pm2 delete all"
+    "dev:stop": "pm2 stop all && pm2 delete all",
+    "docker:start": "docker-compose -f docker-compose.yml -p app up -d --build",
+    "docker:stop": "docker-compose -f docker-compose.yml -p app down"
   }
 }

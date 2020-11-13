@@ -1,19 +1,32 @@
 import { useState } from 'react'
-import { gql, useLazyQuery } from '@apollo/client'
+import { gql, useQuery, useLazyQuery } from '@apollo/client'
 import Head from 'next/head'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import styles from '../styles/Home.module.css'
-import SatellitePositionList from '../components/SatellitePositionList'
+import SatelliteInfoList from '../components/SatelliteInfoList'
 import SatellitePositionMap from '../components/SatellitePositionMap'
 import { OBSERVER_LAT, OBSERVER_LNG, OBSERVER_ALT } from '../constants'
+import { initializeApollo } from '../lib/apolloClient'
+
+export const ALL_SATELLITES = gql`
+  query allSatellites {
+    satellites: allSatellites {
+      id
+      name
+      meanMotion
+    }
+  }
+`
 
 const ALL_POSITIONS = gql`
   query allPositions(
+    $ids: [ID!]!
     $observerLat: Float!
     $observerLng: Float!
     $observerAlt: Float!
   ) {
     positions: allPositions(
+      ids: $ids
       observerLat: $observerLat
       observerLng: $observerLng
       observerAlt: $observerAlt
@@ -30,21 +43,47 @@ const ALL_POSITIONS = gql`
 
 export default function Home() {
   const [count, setCount] = useState(0)
-  const [getPositions, { loading, error, data, refetch }] = useLazyQuery(
-    ALL_POSITIONS,
+
+  const {
+    loading: satellitesLoading,
+    error: satellitesError,
+    data: satellitesData,
+  } = useQuery(ALL_SATELLITES)
+
+  const [
+    getPositions,
     {
-      variables: {
-        observerLat: OBSERVER_LAT,
-        observerLng: OBSERVER_LNG,
-        observerAlt: OBSERVER_ALT,
-      },
-      notifyOnNetworkStatusChange: true,
+      loading: positionsLoading,
+      error: positionsError,
+      data: positionsData,
+      refetch: refetchPositions,
     },
-  )
+  ] = useLazyQuery(ALL_POSITIONS, {
+    variables: {
+      ids: satellitesData.satellites.map(({ id }) => id),
+      observerLat: OBSERVER_LAT,
+      observerLng: OBSERVER_LNG,
+      observerAlt: OBSERVER_ALT,
+    },
+    notifyOnNetworkStatusChange: true,
+  })
 
   function handleOnClick() {
-    count === 0 ? getPositions() : refetch()
+    count === 0 ? getPositions() : refetchPositions()
     setCount(count + 1)
+  }
+
+  // Sort satellites info by mean motion
+  let infos = [...satellitesData.satellites].sort(
+    (a, b) => a.meanMotion - b.meanMotion,
+  )
+
+  // Attribute a position to a satellite when positions are available
+  if (positionsData && positionsData.positions) {
+    infos = infos.map(info => ({
+      ...info,
+      ...positionsData.positions.find(({ id }) => id === info.id),
+    }))
   }
 
   return (
@@ -66,16 +105,20 @@ export default function Home() {
             Get Satellites Positions
           </button>
         </div>
-        {error && <div>`failed to load: {error}`</div>}
-        {loading && <CircularProgress />}
-        {data && data.positions && (
-          <>
-            <SatellitePositionList
-              error={error}
-              loading={loading}
-              positions={data.positions}
+        {infos && (
+          <div className={styles.grid}>
+            <SatelliteInfoList
+              satellitesLoading={satellitesLoading}
+              satellitesError={satellitesError}
+              satellitesInfos={infos}
             />
-            <SatellitePositionMap positions={data.positions} />
+          </div>
+        )}
+        {positionsError && <div>`failed to load: {positionsError}`</div>}
+        {positionsLoading && <CircularProgress />}
+        {positionsData && (
+          <>
+            <SatellitePositionMap positions={infos} />
           </>
         )}
       </main>
@@ -88,4 +131,19 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const apolloClient = initializeApollo()
+
+  await apolloClient.query({
+    query: ALL_SATELLITES,
+  })
+
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+    revalidate: 1,
+  }
 }

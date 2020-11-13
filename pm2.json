@@ -9,9 +9,15 @@
       "out_file": "../../logs/backend/out.log",
       "merge_logs": true,
       "env": {
+        "NODE_ENV": "development",
         "PORT": 49000,
         "API_ENDPOINT": "https://api.n2yo.com/rest/v1/satellite",
         "API_KEY": "<N2YO_API_KEY>"
+      },
+      "watch": ["."],
+      "ignore_watch": ["node_modules"],
+      "watch_options": {
+        "followSymlinks": false
       }
     },
     {
@@ -23,6 +29,7 @@
       "out_file": "../../logs/frontend/out.log",
       "merge_logs": true,
       "env": {
+        "NODE_ENV": "development",
         "NEXT_PUBLIC_API_ENDPOINT": "http://localhost:49000",
         "NEXT_PUBLIC_GOOGLE_API_KEY": "<GOOGLE_MAP_API_KEY>"
       }
