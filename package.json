@@ -24,7 +24,7 @@
     "bootstrap:clean": "lerna exec -- rm -rf node_modules package-lock.json",
     "clean": "lerna clean",
     "release": "lerna version",
-    "verify": "lerna run lint",
+    "verify": "lerna run lint --no-bail",
     "prebuild": "yarn clean -y && yarn bootstrap && yarn dev:start --only backend",
     "build": "lerna run build",
     "postbuild": "yarn dev:stop",

@@ -7,17 +7,6 @@ async function getSatelliteInfo({ id }) {
     `${process.env.API_ENDPOINT}/tle/${id}/&apiKey=${process.env.API_KEY}`,
   )
   const data = await getTleResponse.json()
-  console.log(JSON.stringify(data, null, 2))
-
-  /*const data = {
-    info: {
-      satid: 43567,
-      satname: 'GALILEO 24 (2C0)',
-      transactionscount: 49,
-    },
-    tle:
-      '1 43567U 18060D   20317.06350832 -.00000077 +00000+0 +00000+0 0  9993\r\n2 43567  56.9012  37.0153 0004423 255.7756 104.2041  1.70475736014343',
-  }*/
   return data
 }
 

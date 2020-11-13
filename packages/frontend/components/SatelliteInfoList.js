@@ -51,7 +51,6 @@ export default function SatelliteInfoList({
             columns={columns}
             hideFooterPagination
             onRowSelected={param => {
-              console.log({ param })
               return handleSelectSatellite({ id: param.data.id })
             }}
           />
