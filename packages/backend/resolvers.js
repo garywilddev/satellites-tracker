@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import scalars from './scalars'
-import { satelliteIds, fakePositions, fakeSatellites } from './constants'
+import { fakeSatellites } from './constants'
 
 async function getSatelliteInfo({ id }) {
   const getTleResponse = await fetch(
@@ -10,18 +10,43 @@ async function getSatelliteInfo({ id }) {
   return data
 }
 
-async function getPosition({ id, observerLat, observerLng, observerAlt }) {
+function ny2oPositionInfo2Positions(ny2oPositionInfo) {
+  const { info, positions } = ny2oPositionInfo
+
+  return positions.map(position => ({
+    ...position,
+    timestamp: new Date(position.timestamp * 1000),
+    ...info,
+  }))
+}
+
+async function fetchNextPositions({
+  id,
+  observerLat,
+  observerLng,
+  observerAlt,
+}) {
   const getPositionResponse = await fetch(
-    `${process.env.API_ENDPOINT}/positions/${id}/${observerLat}/${observerLng}/${observerAlt}/1/&apiKey=${process.env.API_KEY}`,
+    `${process.env.API_ENDPOINT}/positions/${id}/${observerLat}/${observerLng}/${observerAlt}/300/&apiKey=${process.env.API_KEY}`,
   )
-  const data = await getPositionResponse.json()
+  const ny2oPositionInfo = await getPositionResponse.json()
 
-  const { info, positions } = data
+  return ny2oPositionInfo2Positions(ny2oPositionInfo)
+}
 
-  return {
-    info,
-    positions,
-  }
+async function findNextPositionInDb(id, context) {
+  const { Position } = context
+  const date = new Date()
+  const arr = await Position.find({
+    satid: id,
+    timestamp: { $gte: date, $lt: new Date(date.valueOf() + 1000) },
+  })
+  return arr[0]
+}
+
+async function writePositionsInDb(positions, context) {
+  const { Position } = context
+  return Position.collection.insertMany(positions)
 }
 
 const resolvers = {
@@ -32,20 +57,33 @@ const resolvers = {
       return getSatelliteInfo({ id })
     },
     async allSatellites() {
-      //return satelliteIds.map(async id => getSatelliteInfo({ id }))
+      // return satelliteIds.map(async id => getSatelliteInfo({ id }))
       return fakeSatellites
     },
-    async allPositions(_, args) {
+    async allPositions(_, args, context) {
       const { ids, observerLat, observerLng, observerAlt } = args
-      /*return ids.map(async id =>
-        getPosition({ id, observerLat, observerLng, observerAlt }),
-      )*/
 
-      return fakePositions
+      return ids.map(async id => {
+        const cachedNextPosition = await findNextPositionInDb(id, context)
+
+        if (!cachedNextPosition) {
+          const nextPositions = await fetchNextPositions({
+            id,
+            observerLat,
+            observerLng,
+            observerAlt,
+          })
+          await writePositionsInDb(nextPositions, context)
+
+          return nextPositions[0]
+        }
+
+        return cachedNextPosition
+      })
     },
     async position(_, args) {
       const { id, observerLat, observerLng, observerAlt } = args
-      return getPosition({ id, observerLat, observerLng, observerAlt })
+      return fetchNextPositions({ id, observerLat, observerLng, observerAlt })
     },
   },
   SatelliteInfo: {
@@ -63,23 +101,23 @@ const resolvers = {
   },
   SatellitePosition: {
     id(obj) {
-      return obj.info.satid
+      return obj.satid
     },
     name(obj) {
-      return obj.info.satname
+      return obj.satname
     },
     time(obj) {
-      return obj.positions[0].timestamp * 1000
+      return obj.timestamp
     }, // multiply response timestamp to convert to js timestamp
 
     lat(obj) {
-      return obj.positions[0].satlatitude
+      return obj.satlatitude
     },
     lng(obj) {
-      return obj.positions[0].satlongitude
+      return obj.satlongitude
     },
     alt(obj) {
-      return obj.positions[0].sataltitude
+      return obj.sataltitude
     },
   },
 }

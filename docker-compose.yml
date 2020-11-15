@@ -1,15 +1,21 @@
 version: "3.7"
 services:
+  mongo:
+    image: mongo:3.6.6
+    networks:
+      - satellites-tracker
+    ports:
+      - 27017:27017
   frontend:
     build: packages/frontend
     ports:
-      - "8080:3000"
+      - 8080:3000
     networks:
       - satellites-tracker
   backend:
     build: packages/backend
     ports:
-      - "49000:49000"
+      - 49000:49000
     networks:
       - satellites-tracker
     environment:
@@ -17,6 +23,7 @@ services:
       - PORT=49000
       - API_ENDPOINT=https://api.n2yo.com/rest/v1/satellite
       - API_KEY=<N2YO_API_KEY>
+      - MONGO_URL=mongodb://mongo:27017/tracker
 
 networks:
   satellites-tracker:

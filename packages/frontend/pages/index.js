@@ -21,7 +21,7 @@ export const ALL_SATELLITES = gql`
 
 const ALL_POSITIONS = gql`
   query allPositions(
-    $ids: [ID!]!
+    $ids: [Int!]!
     $observerLat: Float!
     $observerLng: Float!
     $observerAlt: Float!

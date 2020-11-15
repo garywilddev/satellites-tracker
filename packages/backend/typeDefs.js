@@ -4,14 +4,14 @@ const typeDefs = gql`
   scalar DateTime
 
   type SatelliteInfo {
-    id: ID!
+    id: Int!
     name: String!
     tle: String!
     meanMotion: Float!
   }
 
   type SatellitePosition {
-    id: ID!
+    id: Int!
     name: String!
     time: DateTime!
     lat: Float
@@ -20,7 +20,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    satellite(id: ID!): SatelliteInfo!
+    satellite(id: Int!): SatelliteInfo!
     allSatellites: [SatelliteInfo]!
     fakePositions(
       observerLat: Float!
@@ -28,13 +28,13 @@ const typeDefs = gql`
       observerAlt: Float!
     ): [SatellitePosition!]
     allPositions(
-      ids: [ID!]!
+      ids: [Int!]!
       observerLat: Float!
       observerLng: Float!
       observerAlt: Float!
     ): [SatellitePosition!]
     position(
-      id: ID!
+      id: Int!
       observerLat: Float!
       observerLng: Float!
       observerAlt: Float!

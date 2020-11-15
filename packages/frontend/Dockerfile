@@ -3,7 +3,7 @@ FROM node:12.14.0-stretch-slim
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 # Copy the source files to app directory
-COPY . /usr/src/app
+COPY . /usr/src/app/
 
 RUN npx yarn
 

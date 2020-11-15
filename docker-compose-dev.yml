@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  mongo:
+    image: mongo:3.6.6
+    networks:
+      - satellites-tracker-dev
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo-data:/data/db
+
+networks:
+  satellites-tracker-dev:
+    driver: bridge

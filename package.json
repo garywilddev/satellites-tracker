@@ -26,12 +26,12 @@
     "release": "lerna version",
     "verify": "lerna run lint --no-bail",
     "prebuild": "yarn clean -y && yarn bootstrap && yarn dev:start --only backend",
-    "build": "lerna run build",
+    "build": "lerna run build && docker-compose -f docker-compose.yml -p app up --build --no-start",
     "postbuild": "yarn dev:stop",
-    "dev:start": "pm2 start pm2.json",
+    "dev:start": "docker-compose -f docker-compose-dev.yml -p mongo up -d && pm2 start pm2.json",
     "dev:status": "pm2 status",
-    "dev:stop": "pm2 stop all && pm2 delete all",
-    "docker:start": "docker-compose -f docker-compose.yml -p app up -d --build",
+    "dev:stop": "pm2 stop all && pm2 delete all && docker-compose -f docker-compose-dev.yml -p mongo down",
+    "docker:start": "docker-compose -f docker-compose.yml -p app up --no-build",
     "docker:stop": "docker-compose -f docker-compose.yml -p app down"
   }
 }

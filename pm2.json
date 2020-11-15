@@ -3,8 +3,8 @@
     {
       "name": "backend",
       "cwd": "./packages/backend/",
-      "script": "npm",
-      "args": "run start",
+      "script": "index.js",
+      "node_args": "-r esm --inspect",
       "error_file": "../../logs/backend/error.log",
       "out_file": "../../logs/backend/out.log",
       "merge_logs": true,
@@ -12,7 +12,8 @@
         "NODE_ENV": "development",
         "PORT": 49000,
         "API_ENDPOINT": "https://api.n2yo.com/rest/v1/satellite",
-        "API_KEY": "<N2YO_API_KEY>"
+        "API_KEY": "<N2YO_API_KEY>",
+        "MONGO_URL": "mongodb://localhost:27017/tracker"
       },
       "watch": ["."],
       "ignore_watch": ["node_modules"],
