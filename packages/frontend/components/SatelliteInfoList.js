@@ -5,7 +5,8 @@ export default function SatelliteInfoList({
   satellitesError,
   satellitesLoading,
   satellitesInfos,
-  positionsLoading,
+  arePositionsLoading,
+  arePositionsAvailable,
   handleSelectSatellite,
 }) {
   const columns = [
@@ -18,21 +19,56 @@ export default function SatelliteInfoList({
       headerName: 'Latitude (°)',
       width: 130,
       renderCell: params =>
-        positionsLoading ? <CircularProgress /> : params.value,
+        arePositionsLoading ? <CircularProgress /> : params.value,
     },
     {
       field: 'lng',
       headerName: 'Longitude (°)',
       width: 130,
       renderCell: params =>
-        positionsLoading ? <CircularProgress /> : params.value,
+        arePositionsLoading ? <CircularProgress /> : params.value,
     },
     {
       field: 'alt',
       headerName: 'Altitude (m)',
       width: 130,
       renderCell: params =>
-        positionsLoading ? <CircularProgress /> : params.value,
+        arePositionsLoading ? <CircularProgress /> : params.value,
+    },
+    {
+      field: 'azimuth',
+      headerName: 'Azimuth (°)',
+      width: 130,
+      renderCell: params =>
+        arePositionsLoading ? <CircularProgress /> : params.value,
+    },
+    {
+      field: 'elevation',
+      headerName: 'Elevation (°)',
+      width: 130,
+      renderCell: params =>
+        arePositionsLoading ? <CircularProgress /> : params.value,
+    },
+    {
+      field: 'rightAscension',
+      headerName: 'Right Ascension (°)',
+      width: 150,
+      renderCell: params =>
+        arePositionsLoading ? <CircularProgress /> : params.value,
+    },
+    {
+      field: 'declination',
+      headerName: 'Declination (°)',
+      width: 130,
+      renderCell: params =>
+        arePositionsLoading ? <CircularProgress /> : params.value,
+    },
+    {
+      field: 'eclipsed',
+      headerName: 'Eclipsed (yes/no)',
+      width: 150,
+      renderCell: params =>
+        arePositionsAvailable && (params.value ? 'Yes' : 'No'),
     },
   ]
 

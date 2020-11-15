@@ -119,6 +119,21 @@ const resolvers = {
     alt(obj) {
       return obj.sataltitude
     },
+    azimuth(obj) {
+      return obj.azimuth
+    },
+    elevation(obj) {
+      return obj.elevation
+    },
+    rightAscension(obj) {
+      return obj.ra
+    },
+    declination(obj) {
+      return obj.dec
+    },
+    eclipsed(obj) {
+      return obj.eclipsed
+    }
   },
 }
 

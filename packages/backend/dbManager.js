@@ -7,6 +7,10 @@ export default {
     satlatitude: Number,
     satlongitude: Number,
     sataltitude: Number,
+    azimuth: Number,
+    elevation: Number,
+    ra: Number,
+    dec: Number,
     timestamp: {
       type: Date,
       /* create a ttl index on field timestamp

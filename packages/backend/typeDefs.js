@@ -17,6 +17,11 @@ const typeDefs = gql`
     lat: Float
     lng: Float
     alt: Float
+    azimuth: Float
+    elevation: Float
+    rightAscension: Float
+    declination: Float
+    eclipsed: Boolean
   }
 
   type Query {

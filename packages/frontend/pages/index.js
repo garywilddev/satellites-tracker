@@ -38,6 +38,11 @@ const ALL_POSITIONS = gql`
       lat
       lng
       alt
+      azimuth
+      elevation
+      rightAscension
+      declination
+      eclipsed
     }
   }
 `
@@ -104,7 +109,7 @@ export default function Home() {
           container
           direction="row"
           justify="center"
-          alignItems="start"
+          alignItems="center"
           spacing={6}
         >
           <Grid item xs={12} container justify="center" alignItems="center">
@@ -129,7 +134,8 @@ export default function Home() {
                 satellitesLoading={satellitesLoading}
                 satellitesError={satellitesError}
                 satellitesInfos={infos}
-                positionsLoading={positionsLoading}
+                arePositionsLoading={positionsLoading}
+                arePositionsAvailable={!!positionsData}
                 handleSelectSatellite={handleSelectSatellite}
               />
             )}

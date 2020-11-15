@@ -35,6 +35,7 @@ export default function SatellitePositionMap({ positions, selectedId }) {
             const rank = index + 1
             return (
               <PositionHoverInfo
+                key={index}
                 rank={rank}
                 lat={position.lat}
                 lng={position.lng}
