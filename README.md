@@ -56,12 +56,23 @@ $ npm run build
 $ npm run docker:start
 ```
 
-5. Browser to http://localhost:8080 to access the app
+5. Browse to http://localhost:8080 to access the app
 
 
 ### Run the app for development
+1. Install the dependencies of the root package
 
-1. Set the keys for the N2YO API and the Google Maps API
+```
+$ npm i
+```
+
+2. Install the dependencies in the sub-packages
+
+```
+$ npm run bootstrap
+```
+
+3. Set the keys for the N2YO API and the Google Maps API
 
     a. Make the script **replace_api_keys.sh** executable
 
@@ -75,13 +86,15 @@ $ npm run docker:start
     $ ./replace_api_keys.sh -a <N2YO_API_KEY> -g <GOOGLE_MAPS_API_KEY>
     ```
 
-2. Start the app
+4. Start the app
 
 ```
 $ npm run dev:start
 ```
 
-3. Stop the app
+5. Browse to http://localhost:3000 to access the app
+
+6. Stop the app
 
 ```
 $ npm run dev:stop
