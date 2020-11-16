@@ -7,6 +7,10 @@ async function getSatelliteInfo({ id }) {
     `${process.env.API_ENDPOINT}/tle/${id}/&apiKey=${process.env.API_KEY}`,
   )
   const data = await getTleResponse.json()
+  if (data.error) {
+    throw new Error(`Error while fetching positions: ${data.error}`)
+  }
+
   return data
 }
 
@@ -30,6 +34,10 @@ async function fetchNextPositions({
     `${process.env.API_ENDPOINT}/positions/${id}/${observerLat}/${observerLng}/${observerAlt}/300/&apiKey=${process.env.API_KEY}`,
   )
   const ny2oPositionInfo = await getPositionResponse.json()
+
+  if (ny2oPositionInfo.error) {
+    throw new Error(`Error while fetching positions: ${ny2oPositionInfo.error}`)
+  }
 
   return ny2oPositionInfo2Positions(ny2oPositionInfo)
 }
@@ -133,7 +141,7 @@ const resolvers = {
     },
     eclipsed(obj) {
       return obj.eclipsed
-    }
+    },
   },
 }
 
